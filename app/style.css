@@ -2,11 +2,14 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -18,17 +21,21 @@ body {
   position: absolute;
 }
 
-body, input {
+body,
+input {
   font: menu;
 }
 
-textarea, input, div, button {
+textarea,
+input,
+div,
+button {
   outline: none;
   margin: 0;
 }
 
 .controls {
-  background-color: rgb(217, 241, 238);
+  background-color: rgb(32, 206, 185);
   padding: 10px 10px 10px 10px;
 }
 
@@ -64,7 +71,8 @@ button:disabled {
   display: flex;
 }
 
-.raw-markdown, .rendered-html {
+.raw-markdown,
+.rendered-html {
   min-height: 100%;
   max-width: 50%;
   flex-grow: 1;
@@ -74,17 +82,18 @@ button:disabled {
 }
 
 .raw-markdown {
-  border: 5px solid rgb(238, 252, 250);;
-  background-color: rgb(238, 252, 250);
+  border: 5px solid rgb(78, 94, 91);
+  background-color: rgb(49, 56, 55);
   font-family: monospace;
+  color: white;
 }
 
 .raw-markdown.drag-over {
-  background-color: rgb(181, 220, 216);
-  border-color: rgb(75, 160, 151);
+  background-color: rgb(96, 91, 105);
+  border-color: rgb(74, 73, 87);
 }
 
 .raw-markdown.drag-error {
-  background-color: rgba(170, 57, 57,1);
-  border-color: rgba(255,170,170,1);
+  background-color: rgba(170, 57, 57, 1);
+  border-color: rgba(255, 170, 170, 1);
 }

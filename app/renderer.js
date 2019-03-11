@@ -18,74 +18,74 @@ const showFileButton = document.querySelector("#show-file");
 const openInDefaultButton = document.querySelector("#open-in-default");
 
 const renderMarkdownToHtml = markdown => {
-	htmlView.innerHTML = marked(markdown, { sanitize: true });
+  htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
 const updateUserInterface = isEdited => {
-	let title = "Fire Sale";
+  let title = "Text Edit";
 
-	if (filePath) {
-		title = `${path.basename(filePath)} - ${title}`;
-	}
-	if (isEdited) {
-		title = `${title} (changed)`;
-	}
-	if (filePath) currentWindow.setRepresentedFilename(filePath);
-	currentWindow.setDocumentEdited(isEdited);
+  if (filePath) {
+    title = `${path.basename(filePath)} - ${title}`;
+  }
+  if (isEdited) {
+    title = `${title} (changed)`;
+  }
+  if (filePath) currentWindow.setRepresentedFilename(filePath);
+  currentWindow.setDocumentEdited(isEdited);
 
-	showFileButton.disabled = !filePath;
+  showFileButton.disabled = !filePath;
 
-	openInDefaultButton.disabled = !filePath;
+  openInDefaultButton.disabled = !filePath;
 
-	saveMarkdownButton.disabled = !isEdited;
+  saveMarkdownButton.disabled = !isEdited;
 
-	revertButton.disabled = !isEdited;
-	currentWindow.setTitle(title);
+  revertButton.disabled = !isEdited;
+  currentWindow.setTitle(title);
 };
 
 markdownView.addEventListener("keyup", event => {
-	const currentContent = event.target.value;
+  const currentContent = event.target.value;
 
-	renderMarkdownToHtml(currentContent);
-	updateUserInterface(currentContent !== originalContent);
+  renderMarkdownToHtml(currentContent);
+  updateUserInterface(currentContent !== originalContent);
 });
 
 openFileButton.addEventListener("click", () => {
-	mainProcess.getFileFromUser();
+  mainProcess.getFileFromUser();
 });
 const saveMarkdown = () => {
-	mainProcess.saveMarkdown(filePath, markdownView.value);
+  mainProcess.saveMarkdown(filePath, markdownView.value);
 };
 saveMarkdownButton.addEventListener("click", saveMarkdown);
 
 ipcRenderer.on("save-markdown", saveMarkdown);
 
 const saveHtml = () => {
-	mainProcess.saveHtml(htmlView.innerHTML);
+  mainProcess.saveHtml(htmlView.innerHTML);
 };
 saveHtmlButton.addEventListener("click", saveHtml);
 
 ipcRenderer.on("save-html", saveHtml);
 
 showFileButton.addEventListener("click", () => {
-	if (!filePath) {
-		return alert("nope");
-	}
-	shell.showItemInFolder(filePath);
+  if (!filePath) {
+    return alert("nope");
+  }
+  shell.showItemInFolder(filePath);
 });
 openInDefaultButton.addEventListener("click", () => {
-	if (!filePath) {
-		return alert("nope");
-	}
-	shell.openItem(filePath);
+  if (!filePath) {
+    return alert("nope");
+  }
+  shell.openItem(filePath);
 });
 
 ipcRenderer.on("file-opened", (event, file, content) => {
-	filePath = file;
-	originalContent = content;
+  filePath = file;
+  originalContent = content;
 
-	markdownView.value = content;
-	renderMarkdownToHtml(content);
-	updateUserInterface(false);
+  markdownView.value = content;
+  renderMarkdownToHtml(content);
+  updateUserInterface(false);
 });
 
 document.addEventListener("dragstart", event => event.preventDefault());
@@ -96,30 +96,30 @@ document.addEventListener("drop", event => event.preventDefault());
 const getDraggedFile = event => event.dataTransfer.items[0];
 const getDroppedFile = event => event.dataTransfer.files[0];
 const fileTypeIsSupported = file => {
-	return ["text/plain", "text/markdown"].includes(file.type);
+  return ["text/plain", "text/markdown"].includes(file.type);
 };
 
 markdownView.addEventListener("dragover", () => {
-	const file = getDraggedFile(event);
-	if (fileTypeIsSupported(file)) {
-		markdownView.classList.add("drag-over");
-	} else {
-		markdownView.classList.add("drag-error");
-	}
+  const file = getDraggedFile(event);
+  if (fileTypeIsSupported(file)) {
+    markdownView.classList.add("drag-over");
+  } else {
+    markdownView.classList.add("drag-error");
+  }
 });
 markdownView.addEventListener("dragleave", () => {
-	markdownView.classList.remove("drag-over");
-	markdownView.classList.remove("drag-error");
+  markdownView.classList.remove("drag-over");
+  markdownView.classList.remove("drag-error");
 });
 
 markdownView.addEventListener("drop", event => {
-	const file = getDroppedFile(event);
+  const file = getDroppedFile(event);
 
-	if (fileTypeIsSupported(file)) {
-		mainProcess.openFile(file.path);
-	} else {
-		alert("that file tyoe is bot supported");
-	}
-	markdownView.classList.remove("drag-over");
-	markdownView.classList.remove("drag-error");
+  if (fileTypeIsSupported(file)) {
+    mainProcess.openFile(file.path);
+  } else {
+    alert("that file tyoe is bot supported");
+  }
+  markdownView.classList.remove("drag-over");
+  markdownView.classList.remove("drag-error");
 });
